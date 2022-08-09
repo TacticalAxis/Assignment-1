@@ -2,8 +2,8 @@ package comp611.assignment1;
 
 @SuppressWarnings("unused")
 public enum PlayerType {
-    PLAYER_1("Player 1"),
-    PLAYER_2 ("Player 2");
+    CROSS("Cross"),
+    CIRCLE("Circle");
 
     private final String label;
 
@@ -16,9 +16,9 @@ public enum PlayerType {
 
     public Character getToken() {
         switch (this) {
-            case PLAYER_1:
+            case CROSS:
                 return 'X';
-            case PLAYER_2:
+            case CIRCLE:
                 return 'O';
             default:
                 return null;
@@ -26,7 +26,7 @@ public enum PlayerType {
     }
 
     public static PlayerType getPlayer(char symbol){
-        return symbol == 'X' ? PLAYER_1 : PLAYER_2;
+        return symbol == 'X' ? CROSS : CIRCLE;
     }
 
     public String getLabel() {
