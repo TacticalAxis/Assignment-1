@@ -1,4 +1,4 @@
-package comp611.assignment1;
+package comp611.assignment1.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,19 +133,19 @@ public class ConnectFour {
 
         Random random = new Random();
 
-        c4.board[0] = new char[]{' ', ' ', ' ', 'O', ' ', ' ', ' '};
-        c4.board[1] = new char[]{' ', ' ', ' ', 'X', ' ', ' ', ' '};
-        c4.board[2] = new char[]{' ', 'O', ' ', 'X', 'O', ' ', ' '};
-        c4.board[3] = new char[]{' ', 'O', 'O', 'X', 'X', ' ', ' '};
-        c4.board[4] = new char[]{' ', 'O', 'X', 'O', 'O', ' ', ' '};
-        c4.board[5] = new char[]{'O', 'X', 'X', 'X', 'O', 'O', ' '};
+//        c4.board[0] = new char[]{' ', ' ', ' ', 'O', ' ', ' ', ' '};
+//        c4.board[1] = new char[]{' ', ' ', ' ', 'X', ' ', ' ', ' '};
+//        c4.board[2] = new char[]{' ', 'X', ' ', 'X', 'X', ' ', ' '};
+//        c4.board[3] = new char[]{' ', 'O', 'O', 'X', 'X', ' ', ' '};
+//        c4.board[4] = new char[]{' ', 'O', 'X', 'O', 'O', ' ', ' '};
+//        c4.board[5] = new char[]{'O', 'X', 'X', 'X', 'O', 'O', ' '};
 
-//        for (int i = 0; i < c4.getHeight(); i++) {
-//            for (int j = 0; j < c4.getWidth(); j++) {
-//                int num = random.nextInt(2);
-//                c4.board[i][j] = (num == 1) ? 'X' : 'O';
-//            }
-//        }
+        for (int i = 0; i < c4.getHeight(); i++) {
+            for (int j = 0; j < c4.getWidth(); j++) {
+                int num = random.nextInt(2);
+                c4.board[i][j] = (num == 1) ? 'X' : 'O';
+            }
+        }
 
         for (int i = 0; i < c4.getHeight(); i++) {
             System.out.println(Arrays.toString(c4.getBoard()[i]));

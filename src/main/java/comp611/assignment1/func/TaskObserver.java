@@ -1,4 +1,4 @@
-package comp611.assignment1;
+package comp611.assignment1.func;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

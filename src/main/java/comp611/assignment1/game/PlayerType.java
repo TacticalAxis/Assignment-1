@@ -1,4 +1,4 @@
-package comp611.assignment1;
+package comp611.assignment1.game;
 
 @SuppressWarnings("unused")
 public enum PlayerType {
