@@ -1,5 +1,7 @@
 package comp611.assignment1.game;
 
+import java.util.Random;
+
 @SuppressWarnings("unused")
 public enum PlayerType {
     CROSS("Cross"),
@@ -15,14 +17,7 @@ public enum PlayerType {
     }
 
     public Character getToken() {
-        switch (this) {
-            case CROSS:
-                return 'X';
-            case CIRCLE:
-                return 'O';
-            default:
-                return null;
-        }
+        return this == PlayerType.CROSS ? 'X' : 'O';
     }
 
     public static PlayerType getPlayer(char symbol){
@@ -31,6 +26,12 @@ public enum PlayerType {
 
     public String getLabel() {
         return label;
+    }
+
+    // for testing purposes only
+    public static PlayerType r() {
+        Random random = new Random();
+        return random.nextBoolean() ? PlayerType.CROSS : PlayerType.CIRCLE;
     }
 
     @Override

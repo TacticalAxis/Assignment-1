@@ -1,9 +1,6 @@
 package comp611.assignment1.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @SuppressWarnings({"unused"})
 public class ConnectFour {
@@ -131,22 +128,41 @@ public class ConnectFour {
     public static void main(String[] args) {
         ConnectFour c4 = new ConnectFour(6, 7);
 
+        c4.board[0] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        c4.board[1] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        c4.board[2] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        c4.board[3] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        c4.board[4] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        c4.board[5] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
+
+
+        c4.enterToken();
         Random random = new Random();
 
-//        c4.board[0] = new char[]{' ', ' ', ' ', 'O', ' ', ' ', ' '};
-//        c4.board[1] = new char[]{' ', ' ', ' ', 'X', ' ', ' ', ' '};
-//        c4.board[2] = new char[]{' ', 'X', ' ', 'X', 'X', ' ', ' '};
-//        c4.board[3] = new char[]{' ', 'O', 'O', 'X', 'X', ' ', ' '};
-//        c4.board[4] = new char[]{' ', 'O', 'X', 'O', 'O', ' ', ' '};
-//        c4.board[5] = new char[]{'O', 'X', 'X', 'X', 'O', 'O', ' '};
+        c4.board[0] = new char[]{' ', ' ', ' ', 'O', ' ', ' ', ' '};
+        c4.board[1] = new char[]{' ', 'X', ' ', 'X', ' ', ' ', ' '};
+        c4.board[2] = new char[]{' ', 'X', ' ', 'X', 'X', ' ', ' '};
+        c4.board[3] = new char[]{' ', 'O', 'O', 'X', 'X', ' ', ' '};
+        c4.board[4] = new char[]{' ', 'O', 'X', 'O', 'O', ' ', ' '};
+        c4.board[5] = new char[]{'O', 'X', 'X', 'X', 'O', 'O', ' '};
+
+//        for (int i = 0; i < c4.getHeight(); i++) {
+//            for (int j = 0; j < c4.getWidth(); j++) {
+//                int num = random.nextInt(2);
+//                c4.board[i][j] = (num == 1) ? 'X' : 'O';
+//            }
+//        }
 
         for (int i = 0; i < c4.getHeight(); i++) {
-            for (int j = 0; j < c4.getWidth(); j++) {
-                int num = random.nextInt(2);
-                c4.board[i][j] = (num == 1) ? 'X' : 'O';
-            }
+            System.out.println(Arrays.toString(c4.getBoard()[i]));
         }
 
+        // drop token
+        c4.dropToken(2, PlayerType.CROSS);
+
+        System.out.println();
+
+        // print table again
         for (int i = 0; i < c4.getHeight(); i++) {
             System.out.println(Arrays.toString(c4.getBoard()[i]));
         }
@@ -252,5 +268,49 @@ public class ConnectFour {
                 }
             }
         });
+    }
+
+    public void dropToken(int col, PlayerType pt){
+        int i = board.length - 1;
+        while (board[i][col] != ' ') {
+            i--;
+        }
+        System.out.println("i: " + i);
+        board[i][col] = pt.getToken();
+    }
+
+    public void enterToken() {
+        Scanner scanner = new Scanner(System.in);
+        int inputCol = 0;
+
+
+        PlayerType pt = PlayerType.CROSS;
+        for (int i = 1; i < getHeight() * getWidth(); i++) {
+            if (i % 2 == 0) {
+                pt = PlayerType.CIRCLE;
+            } else {
+                pt = PlayerType.CROSS;
+                ;
+            }
+
+            System.out.println("Enter a column between 0 and " + getHeight());
+            inputCol = scanner.nextInt();
+            if (inputCol < 0 || inputCol > getHeight()) {
+                System.out.println("Invalid column");
+                System.out.println("Enter a column between 0 and " + getHeight());
+                inputCol = scanner.nextInt();
+            }
+            dropToken(inputCol, pt);
+
+            for (int j = 0; j < getHeight(); j++) {
+                System.out.println(Arrays.toString(getBoard()[j]));
+            }
+
+            pt = hasWon();
+            if(pt != null) {
+                System.out.println("Winner: " + pt);
+                break;
+            }
+        }
     }
 }
