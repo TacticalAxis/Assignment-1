@@ -2,33 +2,37 @@ package comp611.assignment1.game;
 
 import java.util.*;
 
-@SuppressWarnings({"unused"})
 public class ConnectFour {
 
     char[][] board;
+    private final Random random;
+    private boolean gameOver;
 
     public ConnectFour(int height, int width){
+        this.random = new Random();
         board = new char[height][width];
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                board[i][j] = ' ';
+            }
+        }
+        this.gameOver = false;
+    }
+
+    public synchronized boolean gameOver() {
+        return gameOver;
     }
 
     private int getHeight() {
         return board.length;
     }
 
-    private int getWidth() {
+    public int getWidth() {
         return board[0].length;
     }
 
-    private char[] getRow(int row) {
-        return board[row];
-    }
-
-    private char[] getColumn(int column) {
-        char[] columnArray = new char[getHeight()];
-        for (int i = 0; i < getHeight(); i++) {
-            columnArray[i] = board[i][column];
-        }
-        return columnArray;
+    public int getRandomColumn(){
+        return random.nextInt(getWidth());
     }
 
     private boolean isInBounds(int row, int column) {
@@ -51,6 +55,20 @@ public class ConnectFour {
         cleanList(diagonals);
 
         return diagonals;
+    }
+
+    public String displayBoard(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < getHeight(); i++){
+            for(int j = 0; j < getWidth(); j++){
+                sb.append(board[i][j]);
+                sb.append("|");
+            }
+            if(i != getHeight() - 1){
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
     }
 
     // get bottom right to top left diagonals
@@ -125,54 +143,12 @@ public class ConnectFour {
         return diagonal;
     }
 
-    public static void main(String[] args) {
-        ConnectFour c4 = new ConnectFour(6, 7);
-
-        c4.board[0] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
-        c4.board[1] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
-        c4.board[2] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
-        c4.board[3] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
-        c4.board[4] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
-        c4.board[5] = new char[]{' ', ' ', ' ', ' ', ' ', ' ', ' '};
-
-
-        c4.enterToken();
-        Random random = new Random();
-
-        c4.board[0] = new char[]{' ', ' ', ' ', 'O', ' ', ' ', ' '};
-        c4.board[1] = new char[]{' ', 'X', ' ', 'X', ' ', ' ', ' '};
-        c4.board[2] = new char[]{' ', 'X', ' ', 'X', 'X', ' ', ' '};
-        c4.board[3] = new char[]{' ', 'O', 'O', 'X', 'X', ' ', ' '};
-        c4.board[4] = new char[]{' ', 'O', 'X', 'O', 'O', ' ', ' '};
-        c4.board[5] = new char[]{'O', 'X', 'X', 'X', 'O', 'O', ' '};
-
-//        for (int i = 0; i < c4.getHeight(); i++) {
-//            for (int j = 0; j < c4.getWidth(); j++) {
-//                int num = random.nextInt(2);
-//                c4.board[i][j] = (num == 1) ? 'X' : 'O';
-//            }
-//        }
-
-        for (int i = 0; i < c4.getHeight(); i++) {
-            System.out.println(Arrays.toString(c4.getBoard()[i]));
-        }
-
-        // drop token
-        c4.dropToken(2, PlayerType.CROSS);
-
-        System.out.println();
-
-        // print table again
-        for (int i = 0; i < c4.getHeight(); i++) {
-            System.out.println(Arrays.toString(c4.getBoard()[i]));
-        }
-
-        PlayerType pt = c4.hasWon();
-        System.out.println("Winner: " + pt);
-    }
-
     public boolean isPlayable(int column){
         return board[0][column] == 0;
+    }
+
+    public boolean isColumnInBounds(int col) {
+        return col >= 0 && col < getWidth();
     }
 
     public char[][] getBoard() {
@@ -221,6 +197,7 @@ public class ConnectFour {
             }
             pt = checkWinner(diag);
             if (pt != null) {
+                gameOver = true;
                 return pt;
             }
         }
@@ -243,6 +220,7 @@ public class ConnectFour {
                 count = 0;
             }
             if (count == 3) {
+                gameOver = true;
                 return PlayerType.getPlayer(last);
             }
             last = c;
@@ -270,47 +248,54 @@ public class ConnectFour {
         });
     }
 
-    public void dropToken(int col, PlayerType pt){
+    public boolean dropToken(int col, PlayerType pt){
+        int useCol = col - 1;
+
+        if (useCol < 0 || useCol >= getWidth()) {
+            return false;
+        }
+
         int i = board.length - 1;
-        while (board[i][col] != ' ') {
+        while (board[i][useCol] != ' ') {
             i--;
         }
-        System.out.println("i: " + i);
-        board[i][col] = pt.getToken();
+        board[i][useCol] = pt.getToken();
+        return true;
     }
 
-    public void enterToken() {
-        Scanner scanner = new Scanner(System.in);
-        int inputCol = 0;
+//    public void enterToken() {
+//        Scanner scanner = new Scanner(System.in);
+//        int inputCol = 0;
+//
+//
+//        PlayerType pt = PlayerType.CROSS;
+//        for (int i = 1; i < getHeight() * getWidth(); i++) {
+//            if (i % 2 == 0) {
+//                pt = PlayerType.CIRCLE;
+//            } else {
+//                pt = PlayerType.CROSS;
+//            }
+//
+//            System.out.println("Enter a column between 0 and " + getHeight());
+//            inputCol = scanner.nextInt();
+//            if (inputCol < 0 || inputCol > getHeight()) {
+//                System.out.println("Invalid column");
+//                System.out.println("Enter a column between 0 and " + getHeight());
+//                inputCol = scanner.nextInt();
+//            }
+//            dropToken(inputCol, pt);
+//
+//            for (int j = 0; j < getHeight(); j++) {
+//                System.out.println(Arrays.toString(getBoard()[j]));
+//            }
+//
+//            pt = hasWon();
+//            if(pt != null) {
+//                System.out.println("Winner: " + pt);
+//                break;
+//            }
+//        }
+//    }
 
 
-        PlayerType pt = PlayerType.CROSS;
-        for (int i = 1; i < getHeight() * getWidth(); i++) {
-            if (i % 2 == 0) {
-                pt = PlayerType.CIRCLE;
-            } else {
-                pt = PlayerType.CROSS;
-                ;
-            }
-
-            System.out.println("Enter a column between 0 and " + getHeight());
-            inputCol = scanner.nextInt();
-            if (inputCol < 0 || inputCol > getHeight()) {
-                System.out.println("Invalid column");
-                System.out.println("Enter a column between 0 and " + getHeight());
-                inputCol = scanner.nextInt();
-            }
-            dropToken(inputCol, pt);
-
-            for (int j = 0; j < getHeight(); j++) {
-                System.out.println(Arrays.toString(getBoard()[j]));
-            }
-
-            pt = hasWon();
-            if(pt != null) {
-                System.out.println("Winner: " + pt);
-                break;
-            }
-        }
-    }
 }

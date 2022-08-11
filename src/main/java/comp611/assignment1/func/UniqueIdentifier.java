@@ -1,21 +1,25 @@
 package comp611.assignment1.func;
 
-import java.util.UUID;
+public class UniqueIdentifier {
 
-public class UniqueIdentifier implements Comparable<UniqueIdentifier> {
+    private int nextId;
+    private static UniqueIdentifier instance;
 
-    private final UUID uuid;
-
-    public UniqueIdentifier() {
-        this.uuid = UUID.randomUUID();
+    private UniqueIdentifier() {
+        nextId = 0;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public static UniqueIdentifier getInstance() {
+        if (instance == null) {
+            synchronized (
+                    UniqueIdentifier.class) {
+                if (instance == null) instance = new UniqueIdentifier();
+            }
+        }
+        return instance;
     }
 
-    @Override
-    public int compareTo(UniqueIdentifier o) {
-        return this.uuid.compareTo(o.uuid);
+    public synchronized int getNextId() {
+        return nextId++;
     }
 }
