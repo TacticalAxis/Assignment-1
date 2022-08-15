@@ -1,7 +1,8 @@
 package comp611.assignment1.func;
 
-public enum GameAction {
-    PLACE_CROSS,
-    PLACE_CIRCLE,
+public abstract class GameAction {
 
+    public GameAction() {}
+
+    public abstract void execute();
 }

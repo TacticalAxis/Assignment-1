@@ -36,30 +36,4 @@ public abstract class Task<E,F> implements Runnable {
             observer.update(progress);
         }
     }
-
-//    private static class SomeTask extends Task<String, Integer> {
-//
-//        public SomeTask(String param) {
-//            super(param);
-//        }
-//
-//        public void run() {
-//            notifyAll(1000);
-//        }
-//    }
-//
-//    private static class SomeObserver implements TaskObserver<Integer> {
-//
-//        @Override
-//        public void update(Integer progress) {
-//            System.out.println(progress);
-//        }
-//    }
-//
-//    public static void main(String[] args) {
-//        SomeTask task = new SomeTask("hello");
-//
-//        SomeObserver observer = new SomeObserver();
-//        task.run();
-//    }
 }
