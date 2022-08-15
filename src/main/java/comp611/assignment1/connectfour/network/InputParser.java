@@ -1,6 +1,8 @@
-package comp611.assignment1.serv;
+package comp611.assignment1.connectfour.network;
 
 public class InputParser {
+
+    private InputParser(){}
 
     public static int parsePositiveInt(String str, int low, int high) {
         int num;// = Integer.parseInt(str);

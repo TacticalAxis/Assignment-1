@@ -1,6 +1,8 @@
-package comp611.assignment1.game;
+package comp611.assignment1.connectfour.game;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class ConnectFour {
 
@@ -155,6 +157,14 @@ public class ConnectFour {
         return board;
     }
 
+    public boolean isValidMove(int move) {
+        if (move < 0 || move >= getWidth()) {
+            return false;
+        }
+
+        return board[0][move] == ' ';
+    }
+
     public PlayerType hasWon() {
         // look through horizontally -
         PlayerType pt;
@@ -248,11 +258,11 @@ public class ConnectFour {
         });
     }
 
-    public boolean dropToken(int col, PlayerType pt){
+    public void dropToken(int col, PlayerType pt){
         int useCol = col - 1;
 
         if (useCol < 0 || useCol >= getWidth()) {
-            return false;
+            return;
         }
 
         int i = board.length - 1;
@@ -260,42 +270,5 @@ public class ConnectFour {
             i--;
         }
         board[i][useCol] = pt.getToken();
-        return true;
     }
-
-//    public void enterToken() {
-//        Scanner scanner = new Scanner(System.in);
-//        int inputCol = 0;
-//
-//
-//        PlayerType pt = PlayerType.CROSS;
-//        for (int i = 1; i < getHeight() * getWidth(); i++) {
-//            if (i % 2 == 0) {
-//                pt = PlayerType.CIRCLE;
-//            } else {
-//                pt = PlayerType.CROSS;
-//            }
-//
-//            System.out.println("Enter a column between 0 and " + getHeight());
-//            inputCol = scanner.nextInt();
-//            if (inputCol < 0 || inputCol > getHeight()) {
-//                System.out.println("Invalid column");
-//                System.out.println("Enter a column between 0 and " + getHeight());
-//                inputCol = scanner.nextInt();
-//            }
-//            dropToken(inputCol, pt);
-//
-//            for (int j = 0; j < getHeight(); j++) {
-//                System.out.println(Arrays.toString(getBoard()[j]));
-//            }
-//
-//            pt = hasWon();
-//            if(pt != null) {
-//                System.out.println("Winner: " + pt);
-//                break;
-//            }
-//        }
-//    }
-
-
 }

@@ -1,4 +1,4 @@
-package comp611.assignment1.func;
+package comp611.assignment1.connectfour.object;
 
 import java.util.ArrayList;
 import java.util.List;
