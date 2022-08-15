@@ -92,6 +92,7 @@ public class ConnectServer {
                     c4.dropToken(moveInt, client);
 
                     if (c4.hasWon() != null) {
+                        pw.println(c4.displayBoard());
                         pw.println("Game over! " + (c4.hasWon() == PlayerType.CROSS ? "You win!" : "You lose!"));
                         pw.println("\u0004");
                         pw.flush();
