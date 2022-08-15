@@ -41,6 +41,8 @@ public class ThreadPool {
         return amount;
     }
 
+
+
     public void resize(int newSize) {
         this.size = newSize;
         Worker[] newWorkers = new Worker[newSize];
@@ -57,6 +59,9 @@ public class ThreadPool {
     }
 
     public void perform(Runnable task) {
+        if(getAvailable() <= 0) {
+            resize(size*2);
+        }
         synchronized (lbQueue) {
             lbQueue.add(task);
             lbQueue.notifyAll();
@@ -78,6 +83,10 @@ public class ThreadPool {
         for (int i = 0; i < size; i++) {
             workers[i] = null;
         }
+    }
+
+    private synchronized void destroy(){
+        Thread.interrupted();
     }
 
     private class Worker extends Thread {
