@@ -2,16 +2,13 @@ package comp611.assignment1.connectfour.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ConnectFour {
 
     char[][] board;
-    private final Random random;
     private boolean gameOver;
 
     public ConnectFour(int height, int width){
-        this.random = new Random();
         board = new char[height][width];
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
@@ -31,10 +28,6 @@ public class ConnectFour {
 
     public int getWidth() {
         return board[0].length;
-    }
-
-    public int getRandomColumn(){
-        return random.nextInt(getWidth());
     }
 
     private boolean isInBounds(int row, int column) {
@@ -143,14 +136,6 @@ public class ConnectFour {
         }
 
         return diagonal;
-    }
-
-    public boolean isPlayable(int column){
-        return board[0][column] == 0;
-    }
-
-    public boolean isColumnInBounds(int col) {
-        return col >= 0 && col < getWidth();
     }
 
     public char[][] getBoard() {

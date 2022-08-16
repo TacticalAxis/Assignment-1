@@ -128,6 +128,13 @@ public class ThreadPool {
                 } catch (RuntimeException ex) {
                     System.out.println("Thread pool interrupted: " + ex.getMessage());
                 }
+
+                try {
+                    // avoid synchronisation issues
+                    wait(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

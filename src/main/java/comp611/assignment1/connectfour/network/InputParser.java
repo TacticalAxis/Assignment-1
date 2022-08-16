@@ -5,7 +5,7 @@ public class InputParser {
     private InputParser(){}
 
     public static int parsePositiveInt(String str, int low, int high) {
-        int num;// = Integer.parseInt(str);
+        int num;
 
         try {
             num = Integer.parseInt(str);

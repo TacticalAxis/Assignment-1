@@ -18,9 +18,10 @@ public class GameTask extends Task<GameAction, String> {
     @Override
     public void run() {
         action.execute();
-        notifyAll(getParam().message());
+        notifyAll("Task " + this.getId() + ":" + getParam().message());
     }
 
+    // related to: task handling of task observers
     @Override
     public void notifyAll(String progress) {
         super.notifyAll(progress);

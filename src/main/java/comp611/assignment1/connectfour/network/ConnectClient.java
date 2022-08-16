@@ -31,7 +31,7 @@ public class ConnectClient {
                     String line = br.readLine();
 
                     if (line == null) {
-                        System.out.println("Server closed connection");
+                        System.out.println("\nGame Over.");
                         break;
                     }
 
@@ -54,7 +54,6 @@ public class ConnectClient {
                     String toPrint = sb.toString();
 
                     System.out.print(toPrint);
-//                    System.out.println(inputRequired);
 
                     if (toPrint.contains("Game Over!")) {
                         finished = true;
