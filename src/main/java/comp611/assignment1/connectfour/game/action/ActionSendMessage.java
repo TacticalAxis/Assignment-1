@@ -10,10 +10,14 @@ public class ActionSendMessage implements GameAction {
     private final String message;
     private final boolean inputRequired;
 
+    private String retMessage;
+
     public ActionSendMessage(String message, boolean inputRequired, PrintWriter... pws) {
         this.pws = pws;
         this.message = message;
         this.inputRequired = inputRequired;
+
+        this.retMessage = null;
     }
 
     public ActionSendMessage(String message, PrintWriter... pws) {
@@ -32,5 +36,11 @@ public class ActionSendMessage implements GameAction {
             printWriter.println("\u0004");
             printWriter.flush();
         }
+        this.retMessage = "Successfully sent to all clients";
+    }
+
+    @Override
+    public String message() {
+        return retMessage;
     }
 }
