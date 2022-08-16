@@ -1,11 +1,9 @@
-package comp611.assignment1.connectfour.game.action;
-
-import comp611.assignment1.connectfour.object.TaskObserver;
+package comp611.assignment1.connectfour.observer;
 
 public class ServerLogObserver implements TaskObserver<String> {
 
     public ServerLogObserver() {
-
+        // nothing to be constructed here
     }
 
     // task handling

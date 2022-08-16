@@ -1,4 +1,4 @@
-package comp611.assignment1.connectfour.object;
+package comp611.assignment1.connectfour.observer;
 
 public interface TaskObserver<F> {
 

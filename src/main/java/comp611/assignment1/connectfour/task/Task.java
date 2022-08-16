@@ -1,9 +1,12 @@
-package comp611.assignment1.connectfour.object;
+package comp611.assignment1.connectfour.task;
+
+import comp611.assignment1.connectfour.observer.TaskObserver;
+import comp611.assignment1.connectfour.task.util.UniqueIdentifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Task<E,F> implements Runnable {
+public abstract class Task<E, F> implements Runnable {
 
     private final int id;
     private final E param;

@@ -1,8 +1,7 @@
-package comp611.assignment1.connectfour.game.action;
+package comp611.assignment1.connectfour.task.action;
 
-import comp611.assignment1.connectfour.game.ConnectFour;
-import comp611.assignment1.connectfour.game.GameAction;
-import comp611.assignment1.connectfour.game.PlayerType;
+import comp611.assignment1.connectfour.app.ConnectFour;
+import comp611.assignment1.connectfour.app.PlayerType;
 
 public class ActionPlaceToken implements GameAction {
 

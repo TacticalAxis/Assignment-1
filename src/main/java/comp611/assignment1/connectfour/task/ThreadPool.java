@@ -1,25 +1,26 @@
-package comp611.assignment1.connectfour.object;
+package comp611.assignment1.connectfour.task;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.LinkedBlockingQueue;
 
-@SuppressWarnings({"InfiniteLoopStatement", "unused", "BusyWait"})
+@SuppressWarnings({"InfiniteLoopStatement", "unused", "UnusedReturnValue"})
 public class ThreadPool {
 
-    // FIFO ordering
+    // use a linked blocking queue to store tasks
     private final LinkedBlockingQueue<Runnable> lbQueue;
 
-    //Thread pool size
+    // local size value
     private int size;
 
-    //Internally pool is an array
+    // internal array to store workers
     private Worker[] workers;
 
     public ThreadPool(int size) {
+        // init actual thread pool
         this.size = size;
         lbQueue = new LinkedBlockingQueue<>();
         workers = new Worker[size];
 
+        // create workers
         for (int i = 0; i < size; i++) {
             workers[i] = new Worker();
             workers[i].start();
@@ -41,7 +42,11 @@ public class ThreadPool {
         return amount;
     }
 
-
+    public void destroyPool() {
+        for (Worker worker : workers) {
+            worker.interrupt();
+        }
+    }
 
     public void resize(int newSize) {
         this.size = newSize;
@@ -58,14 +63,17 @@ public class ThreadPool {
         this.workers = newWorkers;
     }
 
-    public void perform(Runnable task) {
-        if(getAvailable() <= 0) {
-            resize(size*2);
+    public boolean perform(Runnable task) {
+        if (getAvailable() <= 0) {
+            resize(size * 2);
         }
+
         synchronized (lbQueue) {
             lbQueue.add(task);
             lbQueue.notifyAll();
         }
+
+        return true;
     }
 
     public boolean hasActive() {
@@ -83,10 +91,6 @@ public class ThreadPool {
         for (int i = 0; i < size; i++) {
             workers[i] = null;
         }
-    }
-
-    private synchronized void destroy(){
-        Thread.interrupted();
     }
 
     private class Worker extends Thread {
@@ -110,6 +114,7 @@ public class ThreadPool {
         @Override
         public void run() {
             while (true) {
+                // get next task off queue
                 synchronized (lbQueue) {
                     while (lbQueue.isEmpty()) {
                         busy = false;
@@ -123,67 +128,22 @@ public class ThreadPool {
                     busy = true;
                 }
 
+                // run the actual task
                 try {
                     runnable.run();
                 } catch (RuntimeException ex) {
                     System.out.println("Thread pool interrupted: " + ex.getMessage());
                 }
 
-                try {
-                    // avoid synchronisation issues
-                    wait(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                // try to avoid synchronisation issues
+                synchronized (this) {
+                    try {
+                        wait(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-    }
-
-    private static class SomeTask extends Task<String, Integer> {
-
-        public SomeTask(String param) {
-            super(param);
-        }
-
-        public void run() {
-            try {
-                Thread.sleep(200L);
-            } catch (InterruptedException e) {
-                System.out.println("An error occurred while thread is waiting: " + e.getMessage());
-            }
-
-            System.out.println("Task [" + getParam() + "] executed on : " + LocalDateTime.now());
-        }
-    }
-
-    private static class SomeObserver implements TaskObserver<Integer> {
-
-        @Override
-        public void update(Integer progress) {
-            System.out.println(progress);
-        }
-    }
-
-    public static void main(String[] args) {
-        ThreadPool threadPool = new ThreadPool(2);
-
-        for (int i = 1; i <= 400; i++) {
-
-            SomeTask task = new SomeTask("amongus: " + i);
-            System.out.println("Created : " + task.getId());
-
-            threadPool.perform(task);
-        }
-
-        while (threadPool.hasActive()) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        threadPool.shutdown();
-        System.out.println("Process Complete");
     }
 }

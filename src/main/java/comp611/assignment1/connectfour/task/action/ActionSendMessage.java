@@ -1,6 +1,4 @@
-package comp611.assignment1.connectfour.game.action;
-
-import comp611.assignment1.connectfour.game.GameAction;
+package comp611.assignment1.connectfour.task.action;
 
 import java.io.PrintWriter;
 
@@ -36,7 +34,7 @@ public class ActionSendMessage implements GameAction {
             printWriter.println("\u0004");
             printWriter.flush();
         }
-        this.retMessage = "Successfully sent to all clients";
+        this.retMessage = "Successfully sent to client" + (pws.length > 1 ? "s" : "");
     }
 
     @Override

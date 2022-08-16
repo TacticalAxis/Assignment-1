@@ -1,4 +1,4 @@
-package comp611.assignment1.connectfour.game;
+package comp611.assignment1.connectfour.task.action;
 
 public interface GameAction {
 

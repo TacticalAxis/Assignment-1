@@ -1,4 +1,4 @@
-package comp611.assignment1.connectfour.game;
+package comp611.assignment1.connectfour.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ public class ConnectFour {
     char[][] board;
     private boolean gameOver;
 
-    public ConnectFour(int height, int width){
+    public ConnectFour(int height, int width) {
         board = new char[height][width];
-        for(int i = 0; i < height; i++){
-            for(int j = 0; j < width; j++){
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 board[i][j] = ' ';
             }
         }
@@ -52,16 +52,27 @@ public class ConnectFour {
         return diagonals;
     }
 
-    public String displayBoard(){
+    public String displayBoard() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < getHeight(); i++){
-            for(int j = 0; j < getWidth(); j++){
+        // append underscores for the top row
+        for (int i = 0; i < (getWidth() * 2) + 1; i++) {
+            sb.append("_");
+        }
+        sb.append("\n");
+        for (int i = 0; i < getHeight(); i++) {
+            sb.append("|");
+            for (int j = 0; j < getWidth(); j++) {
                 sb.append(board[i][j]);
                 sb.append("|");
             }
-            if(i != getHeight() - 1){
+            if (i != getHeight() - 1) {
                 sb.append("\n");
             }
+        }
+        sb.append("\n");
+        // append underscores to the end of the board
+        for (int i = 0; i < (getWidth() * 2) + 1; i++) {
+            sb.append("\u0305");
         }
         return sb.toString();
     }
@@ -74,7 +85,7 @@ public class ConnectFour {
         Character[] diagonal = new Character[getHeight()];
 
         while (isInBounds(currentRow, currentColumn)) {
-            if(!isInBounds(currentRow + 1, currentColumn + 1)) {
+            if (!isInBounds(currentRow + 1, currentColumn + 1)) {
                 break;
             } else {
                 currentRow++;
@@ -119,7 +130,7 @@ public class ConnectFour {
         Character[] diagonal = new Character[getHeight()];
 
         while (isInBounds(currentRow, currentColumn)) {
-            if(!isInBounds(currentRow - 1, currentColumn + 1)) {
+            if (!isInBounds(currentRow - 1, currentColumn + 1)) {
                 break;
             } else {
                 currentRow--;
@@ -143,11 +154,11 @@ public class ConnectFour {
     }
 
     public boolean isValidMove(int move) {
-        if (move < 0 || move >= getWidth()) {
+        if (move < 1 || move > getWidth()) {
             return false;
         }
 
-        return board[0][move] == ' ';
+        return board[0][move - 1] == ' ';
     }
 
     public PlayerType hasWon() {
@@ -205,7 +216,7 @@ public class ConnectFour {
         int count = 0;
 
         for (char c : set) {
-            if(c == ' ') {
+            if (c == ' ') {
                 continue;
             }
 
@@ -243,7 +254,7 @@ public class ConnectFour {
         });
     }
 
-    public void dropToken(int col, PlayerType pt){
+    public void dropToken(int col, PlayerType pt) {
         int useCol = col - 1;
 
         if (useCol < 0 || useCol >= getWidth()) {

@@ -1,4 +1,4 @@
-package comp611.assignment1.connectfour.game;
+package comp611.assignment1.connectfour.app;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -6,10 +6,10 @@ import java.net.Socket;
 
 public class Player {
 
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
-    private PlayerType playerType;
+    private final Socket socket;
+    private final BufferedReader in;
+    private final PrintWriter out;
+    private final PlayerType playerType;
 
     public Player(Socket socket, BufferedReader in, PrintWriter out, PlayerType playerType) {
         this.socket = socket;
